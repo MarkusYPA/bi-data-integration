@@ -2,3 +2,8 @@ curl -X POST "https://pxweb.asub.ax:443/PXWeb/api/v1/sv/Statistik/BE/Befolkninge
      -H "Content-Type: application/json" \
      -d @demo_api_query.json \
      -o api_data.json
+
+curl -X POST "https://pxweb.asub.ax:443/PXWeb/api/v1/sv/Statistik/BE/Befolkningens%20storlek%20och%20struktur/BE001.px" \
+     -H "Content-Type: application/json" \
+     -d @demo_api_query.json \
+     -o api_data.csv

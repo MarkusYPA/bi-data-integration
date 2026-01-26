@@ -173,12 +173,13 @@
       "selection": {
         "filter": "item",
         "values": [
-          "0"
+          "1",
+          "2"
         ]
       }
     }
   ],
   "response": {
-    "format": "json"
+    "format": "csv"
   }
 }

@@ -16,7 +16,7 @@ x choose language: Pyhton
 - look into doing 2 visualizations
 
 
-- Do medallionarchitecture
+- Do medallion architecture
 	Bronze:	Save APi return to file
 	Silver:	Everything to csv
 	Gold:	Everything to Postgers Star schema
