@@ -1,0 +1,35 @@
+
+
+- draw schema
+- choose language: Pyhton
+- do silver level:
+	- downlaod demographics api
+	
+		url: https://pxweb.asub.ax:443/PXWeb/api/v1/sv/Statistik/BE/Befolkningens storlek och struktur/BE001.px
+		json: pxapi-api_table_BE001.px.json
+		returns: 2000-2024, all ages, genders, municipalities
+		
+curl -X POST "https://pxweb.asub.ax:443/PXWeb/api/v1/sv/Statistik/BE/Befolkningens%20storlek%20och%20struktur/BE001.px" \
+     -H "Content-Type: application/json" \
+     -d @pxapi-api_table_BE001.px.json \
+     -o result.json
+	 
+	- verify tourism csv
+	- convert and verify
+		. groceries
+		. products
+		. sales
+		. demographics
+- run Postgres in Docker
+- store csvs into database
+- ponder required queries
+- look into doing 2 visualizations
+
+
+- Do medallionarchitecture
+	Bronze:	Save APi return to file
+	Silver:	Everything to csv
+	Gold:	Everything to Postgers Star schema
+	
+- Index something? See what is slow
+
