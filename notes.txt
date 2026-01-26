@@ -5,10 +5,10 @@ x choose language: Pyhton
 - bronze level:
 	x downlaod demographics api
 - do silver level:
-	- ignore "silver/"
-	- verify tourism csv
-	- verify demographics
-	- convert and verify
+	x ignore "silver/"
+	x verify tourism csv
+	x verify demographics
+	x convert and verify
 		. groceries
 		. products
 		. sales

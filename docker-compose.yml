@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: bisolutions-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: gold_user
+      POSTGRES_PASSWORD: gold_password
+      POSTGRES_DB: gold_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Change the path here from .../data to just /var/lib/postgresql
+      - bisolutions_pgdata:/var/lib/postgresql
+
+volumes:
+  bisolutions_pgdata:
