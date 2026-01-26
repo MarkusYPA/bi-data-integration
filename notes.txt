@@ -1,10 +1,13 @@
 
-
 x draw schema
 x choose language: Pyhton
-- do silver level:
+
+- bronze level:
 	x downlaod demographics api
+- do silver level:
+	- ignore "silver/"
 	- verify tourism csv
+	- verify demographics
 	- convert and verify
 		. groceries
 		. products

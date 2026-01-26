@@ -16,11 +16,8 @@ def fetch_data():
         # Check if the request was successful
         response.raise_for_status()
         
-        # Parse the result as CSV        
-        #data = response.text
-        
         # Save response to file. newline="" avoids extra blank lines on Windows
-        with open("data/demographics/api_data_gender.csv", "w", encoding="utf-8", newline="") as f:
+        with open("bronze/demographics/api_data_gender.csv", "w", encoding="utf-8", newline="") as f:
             f.write(response.text)
         
     except requests.exceptions.HTTPError as err:

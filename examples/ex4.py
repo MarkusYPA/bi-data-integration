@@ -2,11 +2,11 @@ import json
 from collections import defaultdict
 
 # Load products
-with open('../data/grocery/products.json', 'r') as f:
+with open('../bronze/grocery/products.json', 'r') as f:
     products = {p['product_id']: p for p in json.load(f)}
 
 # Load sales
-with open('../data/grocery/grocery_sales_2023.json', 'r') as f:
+with open('../bronze/grocery/grocery_sales_2023.json', 'r') as f:
     sales = json.load(f)
 
 # Aggregate by category

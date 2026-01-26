@@ -4,7 +4,7 @@ from collections import defaultdict
 
 # Load tourism data
 tourism = {}
-with open('../data/tourism/tourism_data.csv', 'r') as f:
+with open('../bronze/tourism/tourism_data.csv', 'r') as f:
     reader = csv.DictReader(f)
     for row in reader:
         key = (row['municipality_code'], row['year'], row['month'])
@@ -14,11 +14,11 @@ with open('../data/tourism/tourism_data.csv', 'r') as f:
         }
 
 # Load stores
-with open('../data/grocery/stores.json', 'r') as f:
+with open('../bronze/grocery/stores.json', 'r') as f:
     stores = {s['store_id']: s for s in json.load(f)}
 
 # Load and aggregate grocery sales
-with open('../data/grocery/grocery_sales_2023.json', 'r') as f:
+with open('../bronze/grocery/grocery_sales_2023.json', 'r') as f:
     sales = json.load(f)
 
 monthly_grocery = defaultdict(float)

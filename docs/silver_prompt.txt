@@ -1,0 +1,91 @@
+We need to create a star schema database following the medallion architecture. Let's consider the bronze/ folder our bronze level raw data.
+
+The silver level should be verified csv files. We'll do a Dockerized PostgreSQL database in the end, but let's focus on the silver level for now.
+
+I'm given to understand that python is a popular language for this sort of thing, so let's use that. I have a "get_demographics_csv.py" that gets some data for the bronze step. Maybe we can make one python file for the silver step? Or you can do something else if you fell it's more efficient.
+
+This is a school exercise and I expect the data is clean to begin with, but let's do some verifying none the less.
+
+The first two columns in demographics/api_data_gender.csv are strings. We can convert the first one into integer (remove double quotes) since it depicts the year. Leave he second as is. The rest should be integers (amounts). If reasonable, let'sa dd total columns for each municipality. E.g. "Brändö Total" would be "Brändö Kvinnor" + "Brändö Män". There should be 16 of these "[municipality name] Kvinnor" - "[municipality name] Män" pairs and one pair for their totals ("Åland").
+api_data_gender.csv looks like this:
+"år","ålder","Brändö Kvinnor","Brändö Män","Eckerö Kvinnor","Eckerö Män","Finström Kvinnor","Finström Män","Föglö Kvinnor","Föglö Män","Geta Kvinnor","Geta Män","Hammarland Kvinnor","Hammarland Män","Jomala Kvinnor","Jomala Män","Kumlinge Kvinnor","Kumlinge Män","Kökar Kvinnor","Kökar Män","Lemland Kvinnor","Lemland Män","Lumparland Kvinnor","Lumparland Män","Saltvik Kvinnor","Saltvik Män","Sottunga Kvinnor","Sottunga Män","Sund Kvinnor","Sund Män","Vårdö Kvinnor","Vårdö Män","Mariehamn Kvinnor","Mariehamn Män","Åland Kvinnor","Åland Män"
+"2000","Totalt",247,267,418,412,1170,1129,293,302,232,246,664,687,1639,1689,182,223,134,162,772,813,179,198,837,842,72,57,493,520,199,210,5545,4943,13076,12700
+"2000","0",2,2,6,3,8,15,5,3,0,2,6,5,11,20,1,3,0,0,9,10,2,6,8,11,1,1,8,4,0,3,45,55,112,143
+"2000","1",0,5,3,2,14,13,4,2,2,3,5,7,18,19,2,0,2,5,11,8,4,3,9,6,0,0,4,9,1,1,59,63,138,146
+"2000","2",2,3,5,5,12,20,1,2,2,1,6,15,26,24,0,4,1,0,17,19,2,4,7,8,1,0,4,6,3,4,57,55,146,170
+...
+
+tourism/tourism_data.csv contains information about municipalities' tourism. Verify that the columns for year, month and date (YYYY-MM-01) look right. I guess we can make a list of acceptable accommodation_types ("guesthouse", "camping", "hotel", any other?) and see that the entry matches one of those.
+tourism_data.csv looks like this:
+municipality_code,municipality_name,year,month,date,visitor_count,accommodation_type,origin_country,revenue
+MH,Mariehamn,2000,1,2000-01-01,739,guesthouse,Denmark,60413.81
+JO,Jomala,2000,1,2000-01-01,320,camping,Finland,42096.96
+FI,Finström,2000,1,2000-01-01,248,hotel,Denmark,20391.75
+...
+
+The yearly json files about groceries (grocery_sales_2000.json up until grocery_sales_2025.json) in grocery/ require more work. It's more than 700MB of them, so don't bother reading all of them. I'm thinking, let's put them all in one big csv file. The entries look like this:
+[
+  {
+    "store_id": "STORE_001",
+    "product_id": "PROD_013",
+    "date": "2000-01-01",
+    "sales_amount": 537.04,
+    "units_sold": 98
+  },
+  {
+    "store_id": "STORE_001",
+    "product_id": "PROD_020",
+    "date": "2000-01-01",
+    "sales_amount": 332.22,
+    "units_sold": 98
+  },
+  ...
+]
+
+We could do separate columns for day, month, year and full date (as is). Let's convert the store_id and product_id into numeric values, e.g. "STORE_001" -> 1, "PROD_020" -> 20 etc.
+
+grocery/ hold json files for stores and products too.
+
+products.json:
+[
+  {
+    "product_id": "PROD_001",
+    "product_name": "Organic Tomatoes",
+    "product_category": "produce",
+    "unit_price": 6.64,
+    "unit_type": "kg",
+    "supplier": "Nordic Foods"
+  },
+  {
+    "product_id": "PROD_002",
+    "product_name": "Fresh Lettuce",
+    "product_category": "produce",
+    "unit_price": 7.2,
+    "unit_type": "piece",
+    "supplier": "Åland Produce"
+  },
+  ...
+]
+
+Again, let's convert the product_id into a numeric value.
+
+stores.json:
+[
+  {
+    "store_id": "STORE_001",
+    "municipality_code": "MH",
+    "municipality_name": "Mariehamn",
+    "store_location": "Harbor Road 16",
+    "store_name": "Åland Grocery Mariehamn 1"
+  },
+  {
+    "store_id": "STORE_002",
+    "municipality_code": "MH",
+    "municipality_name": "Mariehamn",
+    "store_location": "Main Street 9",
+    "store_name": "Åland Grocery Mariehamn 2"
+  },
+  
+  Here we can convert the store_id into a numeric value.
+  
+  Keep the formatting consistent.
