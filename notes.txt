@@ -1,19 +1,9 @@
 
 
-- draw schema
-- choose language: Pyhton
+x draw schema
+x choose language: Pyhton
 - do silver level:
-	- downlaod demographics api
-	
-		url: https://pxweb.asub.ax:443/PXWeb/api/v1/sv/Statistik/BE/Befolkningens storlek och struktur/BE001.px
-		json: pxapi-api_table_BE001.px.json
-		returns: 2000-2024, all ages, genders, municipalities
-		
-curl -X POST "https://pxweb.asub.ax:443/PXWeb/api/v1/sv/Statistik/BE/Befolkningens%20storlek%20och%20struktur/BE001.px" \
-     -H "Content-Type: application/json" \
-     -d @pxapi-api_table_BE001.px.json \
-     -o result.json
-	 
+	x downlaod demographics api
 	- verify tourism csv
 	- convert and verify
 		. groceries
