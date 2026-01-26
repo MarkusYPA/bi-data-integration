@@ -17,7 +17,7 @@ def process_demographics():
     """
     print("Processing demographics data...")
     file_path = os.path.join(bronze_path, 'demographics', 'api_data_gender.csv')
-    df = pd.read_csv(file_path, dtype={'år': str})
+    df = pd.read_csv(file_path, dtype={'år': str}, encoding='utf-8')
 
     # Clean the 'år' column by removing quotes and converting to integer
     df['år'] = df['år'].str.replace('"', '').astype(int)
@@ -53,7 +53,7 @@ def process_tourism():
     """
     print("Processing tourism data...")
     file_path = os.path.join(bronze_path, 'tourism', 'tourism_data.csv')
-    df = pd.read_csv(file_path)
+    df = pd.read_csv(file_path, encoding='utf-8')
 
     # Verify date columns
     df['date'] = pd.to_datetime(df['date'])
@@ -90,7 +90,7 @@ def process_grocery_sales():
     all_sales_data = []
 
     for file in json_files:
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             data = json.load(f)
             for entry in data:
                 # Transform IDs
@@ -121,7 +121,7 @@ def process_grocery_sales():
     
 
 def process_single_file(file):
-    df = pd.read_json(file)
+    df = pd.read_json(file, encoding='utf-8')
 
     df['store_id'] = (
         df['store_id']
@@ -171,7 +171,7 @@ def process_products():
     """
     print("Processing products data...")
     file_path = os.path.join(bronze_path, 'grocery', 'products.json')
-    with open(file_path, 'r') as f:
+    with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     
     for item in data:
@@ -189,7 +189,7 @@ def process_stores():
     """
     print("Processing stores data...")
     file_path = os.path.join(bronze_path, 'grocery', 'stores.json')
-    with open(file_path, 'r') as f:
+    with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
     for item in data:
