@@ -2,6 +2,7 @@ import os
 import psycopg2
 from psycopg2 import sql
 
+
 def get_db_connection():
     """Establishes a connection to the PostgreSQL database."""
     try:
@@ -18,6 +19,7 @@ def get_db_connection():
         print(f"Could not connect to the database: {e}")
         return None
 
+
 def execute_sql_from_file(cursor, file_path):
     """Reads and executes a SQL script from a file."""
     try:
@@ -30,6 +32,7 @@ def execute_sql_from_file(cursor, file_path):
     except (IOError, psycopg2.Error) as e:
         print(f"Error executing script {file_path}: {e}")
         raise
+
 
 def main():
     """
@@ -59,7 +62,7 @@ def main():
             for file_name in sql_files:
                 file_path = os.path.join("gold", file_name)
                 execute_sql_from_file(cursor, file_path)
-            
+
             conn.commit()
             print("\nAll tables created successfully and transaction committed.")
 
@@ -71,6 +74,7 @@ def main():
         if conn:
             conn.close()
             print("Database connection closed.")
+
 
 if __name__ == '__main__':
     main()
