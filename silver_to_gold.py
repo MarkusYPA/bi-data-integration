@@ -77,6 +77,7 @@ def populate_dim_municipality(engine):
     # 1. Read from demographics.csv
     demo_df = pd.read_csv(os.path.join(
         SILVER_PATH, 'demographics.csv'), encoding='utf-8')
+    
     # Extract municipality names from column headers (e.g., "Brändö Kvinnor")
     muni_cols = [
         col for col in demo_df.columns if 'Kvinnor' in col or 'Män' in col]
@@ -86,18 +87,21 @@ def populate_dim_municipality(engine):
     # 2. Read from stores.csv
     stores_df = pd.read_csv(os.path.join(
         SILVER_PATH, 'stores.csv'), encoding='utf-8')
+
     stores_df = stores_df[["municipality_name", "municipality_code"]].rename(
         columns={"municipality_name": "name"})
 
-    # 3. Read from tourism.csv (does not contain municipality_code)
+    # 3. Read from tourism.csv
     tourism_df = pd.read_csv(os.path.join(
         SILVER_PATH, 'tourism.csv'), encoding='utf-8')
-    tourism_df = tourism_df[["municipality_name"]].rename(
+
+    tourism_df = tourism_df[["municipality_name", "municipality_code"]].rename(
         columns={"municipality_name": "name"})
 
-    # Combine all discovered municipalities
+    # Combine all discovered municipalities, prioritizing tourism and stores for codes
     all_munis_combined = pd.concat(
-        [demo_munis_df, stores_df, tourism_df],
+        # Order changed to prioritize tourism_df, then stores_df
+        [tourism_df, stores_df, demo_munis_df],
         ignore_index=True
     )
 
@@ -200,7 +204,7 @@ def populate_fact_tourism(engine, date_map, municipality_map):
 def populate_fact_demographics(engine, date_map, municipality_map):
     """Populates the demographics fact table by unpivoting the source data."""
     print("Populating fact table: fact_demographics")
-    
+
     df = pd.read_csv(os.path.join(
         SILVER_PATH, 'demographics.csv'), encoding='utf-8')
 
