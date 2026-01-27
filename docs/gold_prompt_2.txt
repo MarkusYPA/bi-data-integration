@@ -17,3 +17,13 @@ fact_sales needs correct references to dim_store, dim_product and dim_date, so t
 fact_tourism needs correct references to dim_date and dim_municipality. Else comes from tourism.csv.
 
 fact_demographics needs correct references to dim_date and dim_municipality. Else comes from demographics.csv.
+
+
+It mostly works, whic is great. I encountered some shortcomings however:
+
+Municipality:
+- No municipality_code anywhere. It isn't really used as of now, but it can be copied from the 'municipality_code' column in both stores.csv and tourism.csv, at the same time with the municipality name. tourism.csv does not contain this information.
+
+Demographics:
+- age_group is always null. It should come from demographics.csv, 'ålder' column.
+- No men ('Män') at all in data. I reverted a change I may have mistakenly made, perhaps it works now.
