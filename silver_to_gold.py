@@ -182,9 +182,6 @@ def populate_fact_tourism(engine, date_map, municipality_map):
         '%Y%m%d').astype(int).map(date_map)
     df['municipality_key'] = df['municipality_name'].map(municipality_map)
 
-    # Rename for consistency
-    df = df.rename(columns={'visitors': 'visitor_count'})
-
     # Select columns for the fact table
     fact_df = df[['date_key', 'municipality_key', 'accommodation_type',
                   'origin_country', 'visitor_count', 'revenue']]
@@ -202,7 +199,7 @@ def populate_fact_demographics(engine, date_map, municipality_map):
     # Unpivot the dataframe from wide to long format
     id_vars = ['år']
     value_vars = [
-        col for col in df.columns if 'Kvinnor' in col or 'Män' in col]
+        col for col in df.columns if 'Kvinnor' in col]
     melted_df = df.melt(id_vars=id_vars, value_vars=value_vars,
                         var_name='municipality_gender', value_name='population_count')
 
