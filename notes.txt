@@ -14,16 +14,8 @@ x do silver level:
 		. sales
 		. demographics
 x run Postgres in Docker
-- create db tables
-- put data from csvs into database
+x create db tables
+x put data from csvs into database
 - ponder required queries
 - look into doing 2 visualizations
-
-
-- Do medallion architecture
-	Bronze:	Save APi return to file
-	Silver:	Everything to csv
-	Gold:	Everything to Postgers Star schema
-	
-- Index something? See what is slow
-
+- index stuff for optimization

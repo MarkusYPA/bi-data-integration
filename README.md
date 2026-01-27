@@ -11,6 +11,7 @@ This project demonstrates a data integration pipeline, transforming raw (bronze)
 *   `process_to_silver.py`: Script to transform bronze data to silver.
 *   `docker-compose.yml`: Docker Compose file to run the PostgreSQL database.
 *   `create_gold_tables.py`: Script to create the star schema tables in PostgreSQL.
+*   `silver_to_gold.py`: Script to load data from the silver layer into the gold star schema.
 
 ## Setup
 
@@ -29,7 +30,7 @@ python -m venv venv
 source venv/bin/activate
 
 # Install required Python packages
-pip install pandas psycopg2-binary
+pip install pandas psycopg2-binary sqlalchemy
 ```
 
 ### 2. Bronze Layer Data Acquisition
@@ -81,3 +82,11 @@ The database connection details are:
 *   **Password**: `gold_password`
 
 You can use tools like `pgAdmin` or `DBeaver` to connect to and inspect the database.
+
+#### c. Populate Gold Tables
+
+The `silver_to_gold.py` script loads the processed data from the `silver/` directory into the newly created star schema tables in the PostgreSQL database. This script handles data transformation, mapping business keys to surrogate keys, and populating dimension and fact tables.
+
+```bash
+python silver_to_gold.py
+```
