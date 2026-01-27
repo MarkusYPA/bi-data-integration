@@ -77,31 +77,38 @@ def populate_dim_municipality(engine):
     # 1. Read from demographics.csv
     demo_df = pd.read_csv(os.path.join(
         SILVER_PATH, 'demographics.csv'), encoding='utf-8')
-
     # Extract municipality names from column headers (e.g., "Brändö Kvinnor")
-    muni_cols = [col for col in demo_df.columns if 'Kvinnor' in col]
+    muni_cols = [
+        col for col in demo_df.columns if 'Kvinnor' in col or 'Män' in col]
     muni_names = {col.split(' ')[0] for col in muni_cols}
     demo_munis_df = pd.DataFrame({'name': list(muni_names)})
 
     # 2. Read from stores.csv
-    stores_df = pd.read_csv(os.path.join(SILVER_PATH, 'stores.csv'), encoding='utf-8')[
-        ["municipality_name", "municipality_code"]].rename(columns={"municipality_name": "name"})
+    stores_df = pd.read_csv(os.path.join(
+        SILVER_PATH, 'stores.csv'), encoding='utf-8')
+    stores_df = stores_df[["municipality_name", "municipality_code"]].rename(
+        columns={"municipality_name": "name"})
 
-    # 3. Read from tourism.csv
-    tourism_df = pd.read_csv(os.path.join(SILVER_PATH, 'tourism.csv'), encoding='utf-8')[
-        ["municipality_name", "municipality_code"]].rename(columns={"municipality_name": "name"})
+    # 3. Read from tourism.csv (does not contain municipality_code)
+    tourism_df = pd.read_csv(os.path.join(
+        SILVER_PATH, 'tourism.csv'), encoding='utf-8')
+    tourism_df = tourism_df[["municipality_name"]].rename(
+        columns={"municipality_name": "name"})
 
     # Combine all discovered municipalities
-    all_munis = pd.concat(
+    all_munis_combined = pd.concat(
         [demo_munis_df, stores_df, tourism_df],
         ignore_index=True
-    ).drop_duplicates(subset=["name"])
+    )
+
+    # Group by name and take the first non-null code. This correctly merges the data.
+    unique_munis = all_munis_combined.groupby('name').first().reset_index()
 
     # Exclude the aggregate 'Åland' row
-    all_munis = all_munis[all_munis['name'].str.lower() != 'åland']
+    unique_munis = unique_munis[unique_munis['name'].str.lower() != 'åland']
 
     # Prepare for final load
-    dim_df = all_munis[['name', 'municipality_code']].reset_index(drop=True)
+    dim_df = unique_munis[['name', 'municipality_code']]
 
     dim_df.to_sql('dim_municipality', engine, if_exists='append', index=False)
     print("dim_municipality populated.")
@@ -193,11 +200,15 @@ def populate_fact_tourism(engine, date_map, municipality_map):
 def populate_fact_demographics(engine, date_map, municipality_map):
     """Populates the demographics fact table by unpivoting the source data."""
     print("Populating fact table: fact_demographics")
+    
     df = pd.read_csv(os.path.join(
         SILVER_PATH, 'demographics.csv'), encoding='utf-8')
 
-    # Unpivot the dataframe from wide to long format
-    id_vars = ['år']
+    # Rename 'ålder' to 'age_group' to match schema
+    df = df.rename(columns={'ålder': 'age_group'})
+
+    # Unpivot the dataframe from wide to long format, keeping age_group
+    id_vars = ['år', 'age_group']
     value_vars = [
         col for col in df.columns if 'Kvinnor' in col or 'Män' in col]
     melted_df = df.melt(id_vars=id_vars, value_vars=value_vars,
@@ -217,9 +228,8 @@ def populate_fact_demographics(engine, date_map, municipality_map):
         municipality_map)
 
     # Clean up and select final columns
-    # The source data does not contain an age_group, so it's omitted.
     fact_df = melted_df[['date_key', 'municipality_key',
-                         'gender', 'population_count']].copy()
+                         'age_group', 'gender', 'population_count']].copy()
 
     # Remove rows that couldn't be mapped (e.g., the 'Åland' total row)
     fact_df.dropna(subset=['municipality_key'], inplace=True)
