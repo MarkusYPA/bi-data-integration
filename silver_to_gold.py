@@ -125,7 +125,7 @@ def populate_dim_store(engine, municipality_map):
     })
     
     # Map municipality name to municipality_key
-    df['municipality_key'] = df['name'].map(municipality_map)
+    df['municipality_key'] = df['municipality_name'].map(municipality_map)
     
     dim_df = df[['store_id', 'name', 'address', 'municipality_key']]
     dim_df.to_sql('dim_store', engine, if_exists='append', index=False)
