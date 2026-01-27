@@ -4,7 +4,7 @@ x choose language: Pyhton
 
 - bronze level:
 	x downlaod demographics api
-- do silver level:
+x do silver level:
 	x ignore "silver/"
 	x verify tourism csv
 	x verify demographics
@@ -13,8 +13,9 @@ x choose language: Pyhton
 		. products
 		. sales
 		. demographics
-- run Postgres in Docker
-- store csvs into database
+x run Postgres in Docker
+- create db tables
+- put data from csvs into database
 - ponder required queries
 - look into doing 2 visualizations
 

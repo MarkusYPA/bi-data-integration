@@ -1,0 +1,19 @@
+Here's some notes on converting the csv files into database entries. Tell me what you think and if you can write some nice python code to accomplish the feat.
+
+Notes on dimensions:
+
+dim_product is probably the simplest as all the data comes directly from products.csv.
+
+dim_municipality gets data from tourism.csv (code and name), stores.csv (code and name) and demographics.csv (name as first part of e.g. "Brändö Män", "Jomala Kvinnor" etc. All municipality names are single words). Should we go through all of them doing upserts, to be sure all municipalities are covered before going forward? Demographics.csv has the aggragate "Åland" too. Should we add that as a municipality (and invent a code like "AL") or calculate it from the data when needed?
+
+Should we add entries to dim_date as we come across them, or just fill it up with all the dates from, say 1990 to 2035 (data is from 2000 to 2025)?
+
+dim_store needs to reference the correct entry in dim_municipality (so has to be created after it I guess), but otherwise it gets its data from stores.csv.
+
+Notes on facts:
+
+fact_sales needs correct references to dim_store, dim_product and dim_date, so those need to be in place first. The rest comes from grocery_sales.csv. This is by far the longest file. Attention needs to be paid to efficiency.
+
+fact_tourism needs correct references to dim_date and dim_municipality. Else comes from tourism.csv.
+
+fact_demographics needs correct references to dim_date and dim_municipality. Else comes from demographics.csv.
