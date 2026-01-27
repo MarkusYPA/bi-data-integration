@@ -199,7 +199,7 @@ def populate_fact_demographics(engine, date_map, municipality_map):
     # Unpivot the dataframe from wide to long format
     id_vars = ['år']
     value_vars = [
-        col for col in df.columns if 'Kvinnor' in col]
+        col for col in df.columns if 'Kvinnor' in col or 'Män' in col]
     melted_df = df.melt(id_vars=id_vars, value_vars=value_vars,
                         var_name='municipality_gender', value_name='population_count')
 
@@ -235,7 +235,12 @@ def populate_fact_demographics(engine, date_map, municipality_map):
 def get_dimension_map(engine, table_name, key_col, value_col):
     """Fetches a dimension table to create a business key to surrogate key map."""
     df = pd.read_sql_table(table_name, engine)
-    return df.set_index(key_col)[value_col].to_dict()
+    if key_col == value_col:
+        # Handles the case for a 1:1 map, e.g., for dim_date.
+        # Creates a dictionary mapping a column's values to themselves.
+        return pd.Series(df[key_col].values, index=df[key_col]).to_dict()
+    else:
+        return df.set_index(key_col)[value_col].to_dict()
 
 
 def main():
