@@ -32,7 +32,7 @@ def analyze_sales_per_capita():
     """
     Analyzes sales per capita over time.
     """
-    df_sales_per_capita = execute_query('sales_per_capita.sql')
+    df_sales_per_capita = execute_query('analysis_queries/sales_per_capita.sql')
     if not df_sales_per_capita.empty:
         print("\n--- Sales Per Capita Over Time ---")
         print(df_sales_per_capita.head())
@@ -45,7 +45,7 @@ def analyze_sales_and_tourism_correlation():
     """
     Analyzes the correlation between sales and tourism statistics.
     """
-    df_sales_tourism = execute_query('sales_and_tourism.sql')
+    df_sales_tourism = execute_query('analysis_queries/sales_and_tourism.sql')
     if not df_sales_tourism.empty:
         print("\n--- Sales and Tourism Data ---")
         print(df_sales_tourism.head())
@@ -61,6 +61,39 @@ def analyze_sales_and_tourism_correlation():
     else:
         print("\nNo data for sales and tourism correlation analysis.")
 
+def analyze_aland_correlation():
+    """
+    Analyzes the correlation between monthly sales per capita and visitor counts 
+    for the entire Aland region.
+    """
+    df_aland_stats = execute_query('analysis_queries/monthly_aland_stats.sql')
+    if not df_aland_stats.empty:
+        print("\n--- Aland Sales per Capita vs Tourism Correlation ---")
+        print(df_aland_stats.head())
+        print(f"\nTotal rows: {len(df_aland_stats)}")
+
+        if 'monthly_sales_per_capita' in df_aland_stats.columns and 'total_monthly_aland_visitors' in df_aland_stats.columns:
+            # Pearson Correlation
+            correlation = df_aland_stats['monthly_sales_per_capita'].corr(df_aland_stats['total_monthly_aland_visitors'])
+            print(f"\nPearson Correlation (r): {correlation:.4f}")
+            
+            # Try to get p-value using scipy
+            try:
+                from scipy import stats
+                r, p_value = stats.pearsonr(df_aland_stats['monthly_sales_per_capita'], df_aland_stats['total_monthly_aland_visitors'])
+                print(f"P-value: {p_value:.4e}")
+                if p_value < 0.05:
+                    print("Result is statistically significant at p < 0.05")
+                else:
+                    print("Result is not statistically significant at p < 0.05")
+            except ImportError:
+                print("scipy not installed, cannot calculate p-value.")
+        else:
+            print("\nCannot calculate correlation: required columns not found.")
+    else:
+        print("\nNo data for Aland statistics.")
+
 if __name__ == "__main__":
     analyze_sales_per_capita()
     analyze_sales_and_tourism_correlation()
+    analyze_aland_correlation()
