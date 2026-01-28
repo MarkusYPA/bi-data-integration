@@ -30,7 +30,7 @@ python -m venv venv
 source venv/bin/activate
 
 # Install required Python packages
-pip install pandas psycopg2-binary sqlalchemy
+pip install pandas psycopg2-binary sqlalchemy requests
 ```
 
 ### 2. Bronze Layer Data Acquisition
