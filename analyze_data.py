@@ -1,6 +1,6 @@
-import psycopg2
 import pandas as pd
 import os
+from sqlalchemy import create_engine
 
 # Database connection parameters
 DB_HOST = "localhost"
@@ -9,24 +9,23 @@ DB_USER = "gold_user"
 DB_PASS = "gold_password"
 DB_PORT = "5432"
 
+# Create a SQLAlchemy engine
+DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+engine = create_engine(DATABASE_URL)
+
 def execute_query(query_file_path):
     """
     Executes an SQL query from a file and returns the results as a pandas DataFrame.
     """
-    conn = None
     df = pd.DataFrame()
     try:
-        conn = psycopg2.connect(host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASS, port=DB_PORT)
         print(f"Executing query from {query_file_path}...")
         with open(query_file_path, 'r') as file:
             query = file.read()
-        df = pd.read_sql(query, conn)
+        df = pd.read_sql(query, engine)
         print("Query executed successfully.")
     except Exception as e:
         print(f"Error executing query from {query_file_path}: {e}")
-    finally:
-        if conn:
-            conn.close()
     return df
 
 def analyze_sales_per_capita():
