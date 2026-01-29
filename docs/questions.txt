@@ -1,0 +1,69 @@
+Analytical Questions
+The data warehouse must be designed to answer the following questions through SQL queries:
+
+1. How has sales per capita changed over time?
+- Requires joining grocery sales, population data, and time dimensions
+- Calculate sales per capita by municipality and time period
+
+2. Is there a correlation between sales and tourism statistics?
+- Analyze relationship between tourism visitor counts/revenue and grocery sales
+- Consider temporal alignment (monthly tourism vs daily sales)
+==
+- Are monthly sales per capita different (is difference within months smaller tham between)? -ANOVA
+- Are monthly visits different? - ANOVA
+- If both are, do they correlate? Two curves (averages) with 12 points?
+
+
+3. Which municipalities have the highest sales per capita, and how does this relate to tourism?
+- Compare sales per capita across municipalities
+- Investigate correlation with tourism metrics
+==
+- Are sales per capita different accross municipalities? - ANOVA
+- Switch municipality to place of month 
+
+
+4. What are the seasonal patterns in both tourism and grocery sales?
+- Identify seasonal trends and patterns
+- Compare tourism seasonality with sales seasonality
+
+5. How do different product categories perform across municipalities?
+- Analyze product category sales by location
+- Identify regional preferences or patterns
+==
+- category, municipality => sales
+- Are sales of one category different accross municipalities (diff within category vs diff between munis)? - ANOVA
+- If so, what are the munis that stand out?
+
+
+6. Which stores are the top performers, and what factors contribute to their success?
+- Store-level performance analysis
+- Investigate factors like location, municipality, size
+==
+- We really only know municipality, so can't differentiate stores
+
+
+7. How has tourism revenue changed over time by municipality?
+- Time-series analysis of tourism trends
+- Municipality-level comparisons
+==
+Yearly trends in revenue (per capita?) for municipalities
+- good for graphs: 16 curves criss-crossing
+
+
+8. What is the relationship between population size and total grocery sales?
+- Demographic correlation analysis
+- Population growth vs sales growth
+==
+- municipality size vs total sales: scatter plot, linear regression
+- for single municipalities: two curves on years, population and sales 
+
+
+9. Are there differences in sales patterns between weekdays and weekends?
+- Temporal pattern analysis
+- Day-of-week effects on sales
+
+10. How do product category sales correlate with tourism seasons?
+- Cross-domain correlation analysis
+- Seasonal product preferences during tourism peaks
+
+
