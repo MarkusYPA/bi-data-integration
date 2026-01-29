@@ -53,7 +53,9 @@ def main():
         # Facts
         "fact_sales.sql",
         "fact_tourism.sql",
-        "fact_demographics.sql"
+        "fact_demographics.sql",
+        # Indexes (performance optimization)
+        "indexes.sql"
     ]
 
     try:
