@@ -94,3 +94,19 @@ The `silver_to_gold.py` script loads the processed data from the `silver/` direc
 ```bash
 python silver_to_gold.py
 ```
+
+### 5. Data Analysis
+
+Once the gold layer is populated, you can run the analysis script to answer various business questions (e.g., sales trends, correlation between tourism and sales, etc.).
+
+This script executes SQL queries defined in the `analysis_queries/` directory and performs further statistical analysis (like calculating p-values) using Python.
+
+```bash
+python analyze_data.py
+```
+
+### 6. Technical Documentation
+
+For a deeper dive into the technical implementation, specifically how Python interacts with the database:
+
+*   [Python & Database Interaction Logic](docs/python_db_interaction.md)
