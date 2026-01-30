@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 from sqlalchemy import create_engine
+from scipy.stats import pearsonr
 
 # Database connection parameters
 DB_HOST = "localhost"
@@ -13,7 +14,7 @@ DB_PORT = "5432"
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 engine = create_engine(DATABASE_URL)
 
-head_rows = 15
+head_rows = 25
 
 def execute_query(query_file_path):
     """
@@ -163,8 +164,10 @@ def analyze_category_seasonal_tourism():
         for cat in categories:
             cat_df = df[df['category'] == cat]
             if len(cat_df) > 1: # Need at least 2 points for correlation
-                corr = cat_df['category_sales'].corr(cat_df['total_visitors'])
-                print(f"  {cat}: {corr:.4f}")
+                corr, p_value = pearsonr(cat_df['category_sales'], cat_df['total_visitors'])
+                print(f"  {cat}: Correlation={corr:.4f}, p-value={p_value:.4f}")
+                if p_value < 0.05:
+                    print(f"    -> Significant at p < 0.05")
             else:
                 print(f"  {cat}: Not enough data")
     else:

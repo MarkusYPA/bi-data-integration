@@ -34,7 +34,7 @@ Set-ExecutionPolicy Unrestricted -Scope Process
 source venv/bin/activate
 
 # Install required Python packages
-pip install pandas psycopg2-binary sqlalchemy requests
+pip install pandas psycopg2-binary sqlalchemy requests scipy
 ```
 
 ### 2. Bronze Layer Data Acquisition
