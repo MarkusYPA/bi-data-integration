@@ -1,4 +1,4 @@
-# Bi-Solutions Data Integration Project
+# BI-Solutions Data Integration Project
 
 This project demonstrates a data integration pipeline, transforming raw (bronze) data into a cleaned (silver) layer, and then into a structured (gold) star schema within a PostgreSQL database.
 
