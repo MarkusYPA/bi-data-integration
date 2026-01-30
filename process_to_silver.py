@@ -161,7 +161,8 @@ def process_grocery_sales_parallel():
         bronze_path, 'grocery', 'grocery_sales_*.json'))
 
     # Use slightly fewer workers than cores (best practice)
-    max_workers = min(8, os.cpu_count() - 1)
+    cpu_count = os.cpu_count() or 2  # Default to 2 if None
+    max_workers = min(8, max(1, cpu_count - 1))
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
         dfs = list(executor.map(process_single_file, json_files))
