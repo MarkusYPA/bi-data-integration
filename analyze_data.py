@@ -36,7 +36,7 @@ def analyze_sales_per_capita():
     """
     df_sales_per_capita = execute_query('analysis_queries/q1_sales_per_capita.sql')
     if not df_sales_per_capita.empty:
-        print("\n--- Sales Per Capita Over Time ---")
+        print("\n--- Q1: Sales Per Capita Over Time ---")
         print(df_sales_per_capita.head(head_rows))
         print(f"\nTotal rows: {len(df_sales_per_capita)}")
         print("\nSales per capita analysis complete. You can further analyze the 'df_sales_per_capita' DataFrame.")
@@ -49,7 +49,7 @@ def analyze_sales_and_tourism_correlation():
     """
     df_sales_tourism = execute_query('analysis_queries/q2_sales_and_tourism.sql')
     if not df_sales_tourism.empty:
-        print("\n--- Sales and Tourism Data ---")
+        print("\n--- Q2: Sales and Tourism Data ---")
         print(df_sales_tourism.head(head_rows))
         print(f"\nTotal rows: {len(df_sales_tourism)}")
 

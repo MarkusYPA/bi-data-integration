@@ -1,5 +1,12 @@
 data/
-bronze/
+# Ignore everything in bronze
+bronze/*
+!bronze/.gitkeep
+
+# Allow demographics folder but ignore its contents
+!bronze/demographics/
+bronze/demographics/*
+!bronze/demographics/.gitkeep
 silver/
 powerbi/
 venv/

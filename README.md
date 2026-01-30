@@ -24,8 +24,12 @@ It's highly recommended to use a Python virtual environment.
 python -m venv venv
 
 # Activate the virtual environment
-# On Windows:
+
+# On Windows you may have to change Execution Policy settings first:
+Set-ExecutionPolicy Unrestricted -Scope Process
+# Then:
 .\venv\Scripts\activate
+
 # On macOS/Linux:
 source venv/bin/activate
 

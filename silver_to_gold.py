@@ -211,6 +211,9 @@ def populate_fact_demographics(engine, date_map, municipality_map):
     # Rename 'ålder' to 'age_group' to match schema
     df = df.rename(columns={'ålder': 'age_group'})
 
+    # Filter out aggregated 'Totalt' rows
+    df = df[df['age_group'] != 'Totalt']
+
     # Unpivot the dataframe from wide to long format, keeping age_group
     id_vars = ['år', 'age_group']
     value_vars = [
