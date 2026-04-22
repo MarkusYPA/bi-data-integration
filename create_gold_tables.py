@@ -54,6 +54,7 @@ def main():
         "fact_sales.sql",
         "fact_tourism.sql",
         "fact_demographics.sql",
+        "fact_costofliving.sql",
         # Indexes (performance optimization)
         "indexes.sql"
     ]
