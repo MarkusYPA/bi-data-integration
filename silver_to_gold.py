@@ -258,7 +258,7 @@ def populate_fact_costofliving(engine, date_map):
         '%Y%m%d').astype(int).map(date_map)
     
     # Rename value column for SQL target
-    df = df.rename(columns={'2015=100': 'index_value'})
+    df = df.rename(columns={'2000=100': 'index_value'})
 
     # Select columns for the fact table
     fact_df = df[['date_key', 'index_value']]

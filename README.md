@@ -29,6 +29,7 @@ python -m venv venv
 Set-ExecutionPolicy Unrestricted -Scope Process
 # Then:
 .\venv\Scripts\activate
+./venv/Scripts/activate
 
 # On macOS/Linux:
 source venv/bin/activate
