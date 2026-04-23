@@ -33,7 +33,7 @@ def get_db_engine():
 def clear_tables(engine):
     """Clears all gold tables in the correct order before loading."""
     table_names = [
-        "fact_sales", "fact_tourism", "fact_demographics",
+        "fact_sales", "fact_tourism", "fact_demographics", "fact_costofliving",
         "dim_store", "dim_product", "dim_municipality", "dim_date"
     ]
     with engine.connect() as conn:
@@ -246,6 +246,26 @@ def populate_fact_demographics(engine, date_map, municipality_map):
                    if_exists='append', index=False)
     print("fact_demographics populated.")
 
+
+def populate_fact_costofliving(engine, date_map):
+    """Populates the cost of living fact table."""
+    print("Populating fact table: fact_costofliving")
+    df = pd.read_csv(os.path.join(
+        SILVER_PATH, 'costofliving.csv'), encoding='utf-8')
+
+    # Map dates to surrogate keys (verifying they exist in dim_date)
+    df['date_key'] = pd.to_datetime(df['date']).dt.strftime(
+        '%Y%m%d').astype(int).map(date_map)
+    
+    # Rename value column for SQL target
+    df = df.rename(columns={'2000=100': 'index_value'})
+
+    # Select columns for the fact table
+    fact_df = df[['date_key', 'index_value']]
+
+    fact_df.to_sql('fact_costofliving', engine, if_exists='append', index=False)
+    print("fact_costofliving populated.")
+
 # --- 4. HELPER FUNCTIONS & MAIN ORCHESTRATION ---
 
 
@@ -294,6 +314,7 @@ def main():
     populate_fact_sales(engine, date_map, product_map, store_map)
     populate_fact_tourism(engine, date_map, municipality_map)
     populate_fact_demographics(engine, date_map, municipality_map)
+    populate_fact_costofliving(engine, date_map)
 
     print("\nETL process completed successfully!")
 

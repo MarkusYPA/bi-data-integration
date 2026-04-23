@@ -86,6 +86,41 @@ def process_tourism():
     print(f"Tourism data saved to {output_path}")
 
 
+def process_cost_of_living():
+    """
+    Processes cost of living data:
+    - Maps month names to numbers.
+    - Creates a date column.
+    """
+    print("Processing cost of living data...")
+    file_path = os.path.join(bronze_path, 'costofliving', 'costofliving.csv')
+    df = pd.read_csv(file_path, encoding='utf-8')
+
+    # Month mapping for English abbreviations
+    month_map = {
+        'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+        'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
+    }
+
+    df['month_num'] = df['month'].map(month_map)
+    df['year_int'] = pd.to_numeric(df['year'])
+
+    # Create date column YYYY-MM-DD
+    df['date'] = df.apply(lambda x: f"{int(x['year_int'])}-{int(x['month_num']):02d}-01", axis=1)
+    
+    # Update month to be numeric to match tourism.csv
+    df['month'] = df['month_num']
+    df['year'] = df['year_int']
+
+    # Reorder columns to match standard (year, month, date first)
+    cols = ['year', 'month', 'date'] + [c for c in df.columns if c not in ['year', 'month', 'date', 'month_num', 'year_int']]
+    df = df[cols]
+
+    output_path = os.path.join(silver_path, 'costofliving.csv')
+    df.to_csv(output_path, index=False, encoding='utf-8')
+    print(f"Cost of living data saved to {output_path}")
+
+
 def process_grocery_sales():
     """
     Processes grocery sales data from multiple JSON files:
@@ -222,6 +257,7 @@ if __name__ == '__main__':
 
     process_demographics()
     process_tourism()
+    process_cost_of_living()
     # process_grocery_sales()
     process_grocery_sales_parallel()
     process_products()

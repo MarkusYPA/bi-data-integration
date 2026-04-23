@@ -10,6 +10,8 @@ CREATE INDEX IF NOT EXISTS idx_fact_tourism_municipality ON fact_tourism(municip
 CREATE INDEX IF NOT EXISTS idx_fact_demographics_date ON fact_demographics(date_key);
 CREATE INDEX IF NOT EXISTS idx_fact_demographics_municipality ON fact_demographics(municipality_key);
 
+CREATE INDEX IF NOT EXISTS idx_fact_costofliving_date ON fact_costofliving(date_key);
+
 CREATE INDEX IF NOT EXISTS idx_dim_store_municipality ON dim_store(municipality_key);
 
 -- Indexes for Dimension Columns used in Filtering & Grouping
