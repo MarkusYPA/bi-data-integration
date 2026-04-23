@@ -8,6 +8,7 @@ This project demonstrates a data integration pipeline, transforming raw (bronze)
 *   `silver/`: Cleaned and processed data (CSV).
 *   `gold/`: SQL scripts for star schema definition.
 *   `get_demographics_csv.py`: Script to fetch demographic data.
+*   `get_costofliving_csv.py`: Script to fetch cost of living data.
 *   `process_to_silver.py`: Script to transform bronze data to silver.
 *   `docker-compose.yml`: Docker Compose file to run the PostgreSQL database.
 *   `create_gold_tables.py`: Script to create the star schema tables in PostgreSQL.
@@ -45,6 +46,12 @@ To fetch demographic data from an API:
 
 ```bash
 python get_demographics_csv.py
+```
+
+To fetch cost of living data from an API:
+
+```bash
+python get_costofliving_csv.py
 ```
 
 ### 3. Silver Layer Transformation
